@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:product/Export_to_pdf/export_to_pdf.dart';
-import 'package:product/Model/deleteModel.dart';
-import 'package:product/Model/product_model.dart';
+import 'package:product/export_to_pdf/export_to_pdf.dart';
+import 'package:product/model/deleteModel.dart';
+import 'package:product/model/product_model.dart';
 import 'package:product/page/main_page/main_page_provider.dart';
 import 'package:product/page/search_page/search_page_screen.dart';
-import 'package:product/provider/crud_provider.dart';
+import 'package:product/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class MainPageScreen extends StatefulWidget {
@@ -182,20 +182,35 @@ class _MainPageScreenState extends State<MainPageScreen> {
           Expanded(
             child: Container(
               padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-              child: provider.isLoading
-                  ? Center(child: CircularProgressIndicator())
-                  : RefreshIndicator(
-                      onRefresh: () => provider.fetchAllProduct(),
-                      child: ListView.builder(
-                        itemCount: provider.products.length,
-                        itemBuilder: (context, index) => _buildCard(
-                          index,
-                          provider.products[index],
-                          provider,
-                          mainPro,
-                        ),
-                      ),
-                    ),
+              child: NotificationListener<ScrollNotification>(
+                onNotification: (ScrollNotification scrollInfo) {
+                  if (scrollInfo.metrics.pixels ==
+                      scrollInfo.metrics.maxScrollExtent) {
+                    mainPro.fetchNextPage();
+                  }
+                  return false;
+                },
+                child: RefreshIndicator(
+                  onRefresh: () => mainPro.refreshProducts(),
+                  child: ListView.builder(
+                    itemCount:
+                        provider.products.length + (mainPro.hasMore ? 1 : 0),
+                    itemBuilder: (context, index) {
+                      if (index < provider.products.length) {
+                        final product = provider.products[index];
+                        return _buildCard(index, product, provider, mainPro);
+                      } else {
+                        return Center(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: CircularProgressIndicator(),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ),
+              ),
             ),
           ),
         ],

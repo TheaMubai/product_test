@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:product/Model/deleteModel.dart';
-import 'package:product/Model/product_model.dart';
+import 'package:product/model/deleteModel.dart';
+import 'package:product/model/product_model.dart';
 import 'package:product/page/search_page/search_page_provider.dart';
-import 'package:product/provider/crud_provider.dart';
+import 'package:product/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 class SearchPageScreen extends StatefulWidget {

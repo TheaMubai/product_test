@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
-import 'package:product/Model/product_model.dart';
+import 'package:product/model/product_model.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path_provider/path_provider.dart';

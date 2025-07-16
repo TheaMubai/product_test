@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:product/Model/deleteModel.dart';
+import 'package:product/model/deleteModel.dart';
+import 'package:product/model/product_model.dart';
+import 'package:product/provider/pagination.dart';
 
 class MainPageProvider extends ChangeNotifier {
   final proNameController = TextEditingController();
@@ -77,5 +79,47 @@ class MainPageProvider extends ChangeNotifier {
     });
 
     notifyListeners();
+  }
+
+  //// This is for Pagination /////
+  List<ProductModel> _products = [];
+  int _currentPage = 1;
+  final int _limit = 10;
+  bool _isFetching = false;
+  bool _hasMore = true;
+
+  List<ProductModel> get products => _products;
+  bool get isFetching => _isFetching;
+  bool get hasMore => _hasMore;
+
+  Future<void> fetchNextPage() async {
+    if (_isFetching || !_hasMore) return;
+    _isFetching = true;
+    notifyListeners();
+    try {
+      final apiService = ApiService();
+      final newProducts = await apiService.getProductPageagination(
+        _currentPage,
+        _limit,
+      );
+      if (newProducts.isEmpty) {
+        _hasMore = false;
+      } else {
+        _products.addAll(List<ProductModel>.from(newProducts));
+        _currentPage++;
+      }
+    } catch (e) {
+      throw Exception("Error fetching products: $e");
+    }
+
+    _isFetching = false;
+    notifyListeners();
+  }
+
+  Future<void> refreshProducts() async {
+    _products = [];
+    _currentPage = 1;
+    _hasMore = true;
+    await fetchNextPage();
   }
 }

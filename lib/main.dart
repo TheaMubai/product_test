@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:product/page/main_page/main_page_provider.dart';
 import 'package:product/page/main_page/main_page_screen.dart';
 import 'package:product/page/search_page/search_page_provider.dart';
-import 'package:product/provider/crud_provider.dart';
+import 'package:product/provider/product_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {

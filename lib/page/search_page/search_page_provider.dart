@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:product/Model/deleteModel.dart';
-import 'package:product/Model/product_model.dart';
+import 'package:product/model/deleteModel.dart';
+import 'package:product/model/product_model.dart';
 
 class SearchPageProvider extends ChangeNotifier {
   final proNameController = TextEditingController();
