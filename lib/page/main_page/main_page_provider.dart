@@ -11,7 +11,7 @@ class MainPageProvider extends ChangeNotifier {
   List<Deletemodel> get isSelect => _isSelect;
   bool _isSelectionMode = false;
   bool get isSelectionMode => _isSelectionMode;
-  String _currentSortBy = 'price'; // or 'stock'
+  String _currentSortBy = 'price';
   bool _isAscending = true;
 
   String get currentSortBy => _currentSortBy;
