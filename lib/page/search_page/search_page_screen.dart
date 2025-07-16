@@ -83,9 +83,16 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
                   child: TextField(
                     autofocus: true,
                     controller: searchPro.searchController,
+                    // onChanged: (value) {
+                    //   searchPro.setSearchController(value.trim());
+                    //   searchPro.setProduct(searchPro.searchValue, pro.products);
+                    // },
                     onChanged: (value) {
                       searchPro.setSearchController(value.trim());
-                      searchPro.setProduct(searchPro.searchValue, pro.products);
+                      searchPro.setProductBynameAndID(
+                        searchPro.searchValue,
+                        pro.products,
+                      );
                     },
                     decoration: InputDecoration(
                       icon: Icon(Icons.search, size: 30),
@@ -112,19 +119,30 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
             ],
           ),
           Expanded(
-            child: ListView.builder(
-              itemCount: searchPro.getProduct.isEmpty
-                  ? pro.products.length
-                  : searchPro.getProduct.length,
-              itemBuilder: (context, index) {
-                if (searchPro.getProduct.isEmpty) {
-                  return _buildCard(index, pro.products[index], pro, searchPro);
+            child: Builder(
+              builder: (context) {
+                final isSearching = searchPro.searchValue.isNotEmpty;
+                final displayList = isSearching
+                    ? searchPro.getProduct
+                    : pro.products;
+                if (isSearching && displayList.isEmpty) {
+                  return Center(
+                    child: Text(
+                      "No results found",
+                      style: TextStyle(fontSize: 18, color: Colors.grey),
+                    ),
+                  );
                 }
-                return _buildCard(
-                  index,
-                  searchPro.getProduct[index],
-                  pro,
-                  searchPro,
+                return ListView.builder(
+                  itemCount: displayList.length,
+                  itemBuilder: (context, index) {
+                    return _buildCard(
+                      index,
+                      displayList[index],
+                      pro,
+                      searchPro,
+                    );
+                  },
                 );
               },
             ),
@@ -172,8 +190,12 @@ class _SearchPageScreenState extends State<SearchPageScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  p.productname,
+                  "Product ID : ${p.productid}",
                   style: GoogleFonts.robotoSlab(fontSize: 20),
+                ),
+                Text(
+                  "Product name : ${p.productname}",
+                  style: GoogleFonts.robotoSlab(fontSize: 18),
                 ),
                 Text(""),
               ],

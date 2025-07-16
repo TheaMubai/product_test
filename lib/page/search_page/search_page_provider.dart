@@ -15,7 +15,6 @@ class SearchPageProvider extends ChangeNotifier {
   String get searchValue => _searchValue;
   List<ProductModel> _product = [];
   List<ProductModel> get getProduct => _product;
-  
 
   void setProduct(String text, List<ProductModel> p) {
     _product = p
@@ -96,5 +95,17 @@ class SearchPageProvider extends ChangeNotifier {
 
   int get getProStockController {
     return int.parse(proStockController.text.trim());
+  }
+
+  void setProductBynameAndID(String keyword, List<ProductModel> allProducts) {
+    keyword = keyword.toLowerCase();
+    int? idSearch = int.tryParse(keyword);
+    _product = allProducts.where((product) {
+      final nameMatch = product.productname.toLowerCase().contains(keyword);
+      final idMatch = idSearch != null && product.productid == idSearch;
+      return nameMatch || idMatch;
+    }).toList();
+
+    notifyListeners();
   }
 }
