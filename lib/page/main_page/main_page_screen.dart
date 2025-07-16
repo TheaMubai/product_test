@@ -271,8 +271,12 @@ class _MainPageScreenState extends State<MainPageScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  p.productname,
+                  "Product ID : ${p.productid}",
                   style: GoogleFonts.robotoSlab(fontSize: 20),
+                ),
+                Text(
+                  "Product name : ${p.productname}",
+                  style: GoogleFonts.robotoSlab(fontSize: 18),
                 ),
                 Text(""),
               ],
